@@ -40,6 +40,9 @@ public final class MessageDigests {
         });
     }
 
+    // 由于MessageDigest非线程安全,其计算hash的方法又是先update(要计算的值),然后再digest(),所以创建一个共享变量来回同步开销过大
+    // 解决方法:每回在线程中调用计算hash时,创建一个新的MessageDigest对象,update(),digest()
+    // 如果创建对象成本过高,则可以使用线程本地变量ThreadLocal<MessageDigest>来解决
     private static final ThreadLocal<MessageDigest> MD5_DIGEST = createThreadLocalMessageDigest("MD5");
     private static final ThreadLocal<MessageDigest> SHA_1_DIGEST = createThreadLocalMessageDigest("SHA-1");
     private static final ThreadLocal<MessageDigest> SHA_256_DIGEST = createThreadLocalMessageDigest("SHA-256");
