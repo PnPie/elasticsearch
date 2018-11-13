@@ -50,7 +50,8 @@ public class ReleasableLock implements Releasable {
         assert removeCurrentThread();
     }
 
-
+    // 如果调用当前锁acquire()方法的线程已经持有了锁,线程本地变量holdingThreads加1
+    // 所以线程本地变量holdingThreads用来计算一个线程在已经获得锁的情况下,重新尝试拿锁的次数
     public ReleasableLock acquire() throws EngineException {
         lock.lock();
         assert addCurrentThread();
