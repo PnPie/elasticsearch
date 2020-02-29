@@ -369,6 +369,12 @@ public class Coordinator extends AbstractLifecycleComponent implements Discovery
         }
     }
 
+    /**
+     * ES的选主由master-eligible nodes中term最大的节点发起
+     * ES会为每个节点设置一个term(type long),集群中term最大的节点发起master election请求,
+     * 其他节点收到后投票,发起master election的节点收到多于quorum数量的votes后,认为自己被选举为master,
+     * 向其他节点发送请求,请求它们join
+     */
     private void startElection() {
         synchronized (mutex) {
             // The preVoteCollector is only active while we are candidate, but it does not call this method with synchronisation, so we have
