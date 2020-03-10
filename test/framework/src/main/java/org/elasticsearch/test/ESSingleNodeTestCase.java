@@ -258,6 +258,13 @@ public abstract class ESSingleNodeTestCase extends ESTestCase {
     /**
      * Get an instance for a particular class using the injector of the singleton node.
      */
+
+    /**
+     * {@link Class<T>}对象是JVM对一个类加载后生成的产物,存在于Heap内存中,对应类T
+     * 用来创建T的实例{@link Class#newInstance()}
+     * Ps. 类加载过程中.class文件先是被加载到了内存的Metaspace中(包含了类的各种描述信息),
+     *     其次在Heap中创建{@link Class}文件
+     */
     protected <T> T getInstanceFromNode(Class<T> clazz) {
         return NODE.injector().getInstance(clazz);
     }
