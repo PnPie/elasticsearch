@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  * Parses xcontent to a concrete action of the same type.
  */
+// 抽象工厂: 取同一类型输入(XContent),根据不同的内容创造出不同类型的产品(此处为各种ExecutableAction的implementation, email, slack, jira etc.)
 public abstract class ActionFactory {
 
     protected final Logger actionLogger;
