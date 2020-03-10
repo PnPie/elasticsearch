@@ -34,13 +34,7 @@ import java.io.IOException;
 import java.time.Clock;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.elasticsearch.common.unit.TimeValue.timeValueMillis;
@@ -63,7 +57,7 @@ public class ActionWrapper implements ToXContentObject {
                          @Nullable ExecutableTransform<Transform, Transform.Result> transform,
                          ExecutableAction<? extends Action> action,
                          @Nullable String path,
-                         @Nullable Integer maxIterations) {        
+                         @Nullable Integer maxIterations) {
         this.id = id;
         this.condition = condition;
         this.throttler = throttler;
@@ -324,6 +318,7 @@ public class ActionWrapper implements ToXContentObject {
                 } else if (WatchField.MAX_ITERATIONS.match(currentFieldName, parser.getDeprecationHandler())) {
                     maxIterations = parser.intValue();
                 } else {
+                    // 抽象工厂的使用: 通过输入判断要用哪个具体的工厂,然后用工厂拿输入生产出ExecutableAction,可以是jira, email, slack etc.
                     // it's the type of the action
                     ActionFactory actionFactory = actionRegistry.factory(currentFieldName);
                     if (actionFactory == null) {
@@ -339,6 +334,8 @@ public class ActionWrapper implements ToXContentObject {
         }
 
         ActionThrottler throttler = new ActionThrottler(clock, throttlePeriod, licenseState);
+        // ExecutableAction(jira, slack, email etc.)被放入了一个ActionWrapper中,
+        // 为了后期通过这个统一的ActionWrapper,调用execute()方法,去take不同的actions(在jira上,slack上,发email etc.)
         return new ActionWrapper(actionId, throttler, condition, transform, action, path, maxIterations);
     }
 
