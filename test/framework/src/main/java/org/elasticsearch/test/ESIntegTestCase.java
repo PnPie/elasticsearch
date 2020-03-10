@@ -704,6 +704,10 @@ public abstract class ESIntegTestCase extends ESTestCase {
         for (String name : names) {
             boolean success = false;
             try {
+                /**
+                 * {@link Exception}和{@link Error}都是{@link Throwable}的子类,
+                 * 但Error多表示系统级的比较严重的错误,无法被捕获处理,并且会导致程序终止
+                 */
                 assertAcked(prepareCreate(name));
                 created.add(name);
                 success = true;
