@@ -19,15 +19,18 @@
 
 package org.elasticsearch.action.support.master;
 
-import org.elasticsearch.action.ActionType;
 import org.elasticsearch.action.ActionRequestBuilder;
 import org.elasticsearch.action.ActionResponse;
+import org.elasticsearch.action.ActionType;
 import org.elasticsearch.client.ElasticsearchClient;
 import org.elasticsearch.common.unit.TimeValue;
 
 /**
  * Base request builder for master node operations
  */
+// extends在某种意义上更像是定义一个新的,更concrete的类型.
+// 泛型中也可以指定上下界,此处意为要求MasterNodeOperationRequestBuilder的
+// Request为一个MasterNodeRequest<Request>, Reponse为一个ActionResponse
 public abstract class MasterNodeOperationRequestBuilder<Request extends MasterNodeRequest<Request>, Response extends ActionResponse,
         RequestBuilder extends MasterNodeOperationRequestBuilder<Request, Response, RequestBuilder>>
         extends ActionRequestBuilder<Request, Response> {
