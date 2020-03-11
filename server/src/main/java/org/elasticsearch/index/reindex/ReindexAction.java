@@ -21,10 +21,13 @@ package org.elasticsearch.index.reindex;
 
 import org.elasticsearch.action.ActionType;
 
+// Singleton: Eager initialization
 public class ReindexAction extends ActionType<BulkByScrollResponse> {
+    // 提供一个static的INSTANCE变量(随类只加载一遍),并设为public作为单例对象供外部使用
     public static final ReindexAction INSTANCE = new ReindexAction();
     public static final String NAME = "indices:data/write/reindex";
 
+    // 将constructor设为private
     private ReindexAction() {
         super(NAME, BulkByScrollResponse::new);
     }
