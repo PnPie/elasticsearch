@@ -24,10 +24,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+// Builder类
 public class ModulesBuilder implements Iterable<Module> {
 
+    // 初始化时创建一个private empty List
     private final List<Module> modules = new ArrayList<>();
 
+    // 提供一个向List中加入元素的方法
     public ModulesBuilder add(Module... newModules) {
         Collections.addAll(modules, newModules);
         return this;
@@ -38,6 +41,7 @@ public class ModulesBuilder implements Iterable<Module> {
         return modules.iterator();
     }
 
+    // Builder类的目的: 创建Guice Injector
     public Injector createInjector() {
         Injector injector = Guice.createInjector(modules);
         ((InjectorImpl) injector).clearCache();

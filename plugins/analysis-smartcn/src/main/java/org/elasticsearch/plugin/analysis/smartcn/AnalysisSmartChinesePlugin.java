@@ -20,13 +20,7 @@
 package org.elasticsearch.plugin.analysis.smartcn;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.elasticsearch.index.analysis.AnalyzerProvider;
-import org.elasticsearch.index.analysis.SmartChineseAnalyzerProvider;
-import org.elasticsearch.index.analysis.SmartChineseNoOpTokenFilterFactory;
-import org.elasticsearch.index.analysis.SmartChineseStopTokenFilterFactory;
-import org.elasticsearch.index.analysis.SmartChineseTokenizerTokenizerFactory;
-import org.elasticsearch.index.analysis.TokenFilterFactory;
-import org.elasticsearch.index.analysis.TokenizerFactory;
+import org.elasticsearch.index.analysis.*;
 import org.elasticsearch.indices.analysis.AnalysisModule.AnalysisProvider;
 import org.elasticsearch.plugins.AnalysisPlugin;
 import org.elasticsearch.plugins.Plugin;
@@ -49,12 +43,22 @@ public class AnalysisSmartChinesePlugin extends Plugin implements AnalysisPlugin
     @Override
     public Map<String, AnalysisProvider<TokenizerFactory>> getTokenizers() {
         Map<String, AnalysisProvider<TokenizerFactory>> extra = new HashMap<>();
+        /**
+         * SmartChineseTokenizerTokenizerFactory::new ==
+         * (indexSettings, environment, name, settings) -> new SmartChineseTokenizerTokenizerFactory(indexSettings, environment, name, settings)
+         * 即 SmartChineseTokenizerTokenizerFactory::new 为创建对象的Lambda表达式的简化形式
+         */
         extra.put("smartcn_tokenizer", SmartChineseTokenizerTokenizerFactory::new);
         // TODO: deprecate and remove, this is an alias to "smartcn_tokenizer"; it's here for backwards compat
         extra.put("smartcn_sentence", SmartChineseTokenizerTokenizerFactory::new);
         return extra;
     }
 
+    /**
+     * {@link AnalysisProvider}是一个工厂接口,传入一个implemented factory
+     * {@link AnalysisProvider}还是一个{@link FunctionalInterface},只有一个抽象方法
+     * @return
+     */
     @Override
     public Map<String, AnalysisProvider<AnalyzerProvider<? extends Analyzer>>> getAnalyzers() {
         return singletonMap("smartcn", SmartChineseAnalyzerProvider::new);

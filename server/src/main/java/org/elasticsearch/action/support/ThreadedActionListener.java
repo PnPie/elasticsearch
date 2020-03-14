@@ -29,6 +29,7 @@ import org.elasticsearch.threadpool.ThreadPool;
 /**
  * An action listener that wraps another action listener and threading its execution.
  */
+// 一个ActionListener中包含了另一个ActionListener,当收到结果时用指定线程池去处理
 public final class ThreadedActionListener<Response> implements ActionListener<Response> {
 
     private final Logger logger;

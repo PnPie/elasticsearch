@@ -29,25 +29,7 @@ import org.elasticsearch.common.logging.DeprecationLogger;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.index.analysis.AbstractTokenFilterFactory;
-import org.elasticsearch.index.analysis.AnalysisRegistry;
-import org.elasticsearch.index.analysis.AnalyzerProvider;
-import org.elasticsearch.index.analysis.CharFilterFactory;
-import org.elasticsearch.index.analysis.HunspellTokenFilterFactory;
-import org.elasticsearch.index.analysis.KeywordAnalyzerProvider;
-import org.elasticsearch.index.analysis.PreBuiltAnalyzerProviderFactory;
-import org.elasticsearch.index.analysis.PreConfiguredCharFilter;
-import org.elasticsearch.index.analysis.PreConfiguredTokenFilter;
-import org.elasticsearch.index.analysis.PreConfiguredTokenizer;
-import org.elasticsearch.index.analysis.ShingleTokenFilterFactory;
-import org.elasticsearch.index.analysis.SimpleAnalyzerProvider;
-import org.elasticsearch.index.analysis.StandardAnalyzerProvider;
-import org.elasticsearch.index.analysis.StandardTokenizerFactory;
-import org.elasticsearch.index.analysis.StopAnalyzerProvider;
-import org.elasticsearch.index.analysis.StopTokenFilterFactory;
-import org.elasticsearch.index.analysis.TokenFilterFactory;
-import org.elasticsearch.index.analysis.TokenizerFactory;
-import org.elasticsearch.index.analysis.WhitespaceAnalyzerProvider;
+import org.elasticsearch.index.analysis.*;
 import org.elasticsearch.plugins.AnalysisPlugin;
 
 import java.io.IOException;
@@ -258,6 +240,8 @@ public final class AnalysisModule {
 
     /**
      * The basic factory interface for analysis components.
+     * 一个抽象工厂:只不过它生产的还是工厂lol
+     * {@link FunctionalInterface}:只有一个抽象方法的接口
      */
     public interface AnalysisProvider<T> {
 
@@ -284,6 +268,7 @@ public final class AnalysisModule {
          * @throws IllegalArgumentException if the provider requires analysis settings ie. if {@link #requiresAnalysisSettings()} returns
          *                                  <code>true</code>
          */
+        // java 8允许对接口进行实现,通过default
         default T get(Environment environment, String name) throws IOException {
             if (requiresAnalysisSettings()) {
                 throw new IllegalArgumentException("Analysis settings required - can't instantiate analysis factory");
@@ -295,6 +280,7 @@ public final class AnalysisModule {
          * If <code>true</code> the analysis component created by this provider requires certain settings to be instantiated.
          * it can't be created with defaults. The default is <code>false</code>.
          */
+        // java 8允许对接口进行实现,通过default
         default boolean requiresAnalysisSettings() {
             return false;
         }

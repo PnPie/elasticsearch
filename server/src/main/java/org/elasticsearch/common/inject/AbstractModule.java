@@ -45,6 +45,7 @@ import java.util.Objects;
  *
  * @author crazybob@google.com (Bob Lee)
  */
+// AbstractModule实现了接口到实现的绑定
 public abstract class AbstractModule implements Module {
 
     Binder binder;
