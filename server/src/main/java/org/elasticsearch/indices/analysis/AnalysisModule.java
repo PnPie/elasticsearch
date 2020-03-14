@@ -259,6 +259,8 @@ public final class AnalysisModule {
 
     /**
      * The basic factory interface for analysis components.
+     * 一个抽象工厂:只不过它生产的还是工厂lol
+     * {@link FunctionalInterface}:只有一个抽象方法的接口
      */
     public interface AnalysisProvider<T> {
 
@@ -285,6 +287,7 @@ public final class AnalysisModule {
          * @throws IllegalArgumentException if the provider requires analysis settings ie. if {@link #requiresAnalysisSettings()} returns
          *                                  <code>true</code>
          */
+        // java 8允许对接口进行实现,通过default
         default T get(Environment environment, String name) throws IOException {
             if (requiresAnalysisSettings()) {
                 throw new IllegalArgumentException("Analysis settings required - can't instantiate analysis factory");

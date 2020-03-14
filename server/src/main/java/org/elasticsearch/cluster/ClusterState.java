@@ -83,6 +83,8 @@ import java.util.stream.StreamSupport;
  * throws the {@link IncompatibleClusterStateVersionException}, which causes the publishing mechanism to send
  * a full version of the cluster state to the node on which this exception was thrown.
  */
+
+// ClusterState只能在master节点上进行更新,更新完了之后会通过master节点上的Discovery模块publish出去
 public class ClusterState implements ToXContentFragment, Diffable<ClusterState> {
 
     public static final ClusterState EMPTY_STATE = builder(ClusterName.CLUSTER_NAME_SETTING.getDefault(Settings.EMPTY)).build();

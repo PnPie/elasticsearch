@@ -30,6 +30,7 @@ package org.elasticsearch.common.inject;
  * Use scope and binding annotations on these methods to configure the
  * bindings.
  */
+// Module定义了接口到实现的绑定,用来创建Guice Injector
 public interface Module {
 
     /**

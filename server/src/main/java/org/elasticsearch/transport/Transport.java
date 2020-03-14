@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
+// Transport模块用于ES集群内部节点间通信
 public interface Transport extends LifecycleComponent {
 
     /**
